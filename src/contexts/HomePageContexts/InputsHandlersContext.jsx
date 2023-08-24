@@ -77,6 +77,20 @@ export default function InputHandlersProvider({ children }) {
           errorMessage: 'Name is required',
         },
       })
+      return
+    }
+
+    if (e.target.value.length < 4 || e.target.value.length > 20) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputName: {
+          ...registerInputsStates.inputName,
+          value: e.target.value,
+          errorState: true,
+          errorMessage: 'Name must be between 4 and 20 characters',
+        },
+      })
+      return
     }
   }
 

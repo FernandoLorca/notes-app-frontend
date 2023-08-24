@@ -18,6 +18,8 @@ export default function HomePageForms() {
   const { registerUser, userData } = useContext(RegisterLoginContext)
   const [loading, setLoading] = useState(false)
 
+  console.log(userData)
+
   return (
     <>
       <Card

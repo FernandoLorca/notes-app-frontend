@@ -22,6 +22,7 @@ export default function RegisterLoginContextProvider({ children }) {
     })
     const data = await res.json()
     setUserData(data)
+    return data
   }
 
   return (
