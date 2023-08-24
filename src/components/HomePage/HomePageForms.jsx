@@ -3,6 +3,7 @@ import { useContext, useState } from 'react'
 
 import { HaveAccountContext } from '../../contexts/HomePageContexts/HaveAccountContext'
 import { InputHandlersContext } from '../../contexts/HomePageContexts/InputsHandlersContext'
+import { RegisterLoginContext } from '../../contexts/ApiConnectionsContext/RegisterLoginContext'
 import { formHandler } from './utils/formHandler'
 
 import Form from '../BasicComponents/Forms/Form'
@@ -12,12 +13,9 @@ import LoginInputs from './LoginInputs'
 
 export default function HomePageForms() {
   const { login, loginState } = useContext(HaveAccountContext)
-  const {
-    registerInputsStates,
-    setRegisterInputsStates,
-    registerUser,
-    saveUser,
-  } = useContext(InputHandlersContext)
+  const { registerInputsStates, setRegisterInputsStates } =
+    useContext(InputHandlersContext)
+  const { registerUser, userData } = useContext(RegisterLoginContext)
   const [loading, setLoading] = useState(false)
 
   return (
@@ -33,13 +31,14 @@ export default function HomePageForms() {
               registerInputsStates,
               setRegisterInputsStates,
               registerUser,
-              saveUser,
+              userData,
               setLoading
             )
           }
           textButton="Register"
           inputs={<RegisterInputs />}
           loading={loading}
+          registerUser={registerUser}
         />
         <HaveAccount
           login={login}

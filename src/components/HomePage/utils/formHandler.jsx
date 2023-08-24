@@ -3,60 +3,104 @@ export const formHandler = async (
   registerInputsStates,
   setRegisterInputsStates,
   registerUser,
-  saveUser,
+  userData,
   setLoading
 ) => {
   event.preventDefault()
 
-  if (
-    registerInputsStates.inputRepeatPassword.value !==
-    registerInputsStates.inputPassword.value
-  ) {
-    setRegisterInputsStates({
-      ...registerInputsStates,
-      inputRepeatPassword: {
-        ...registerInputsStates.inputRepeatPassword,
-        errorState: true,
-        errorMessage: 'Passwords do not match',
-      },
-    })
-    return
-  }
-
   try {
     setLoading(true)
 
-    const data = await registerUser()
-
-    if (data.ok === false && data.status === 400) {
+    if (!registerInputsStates.inputName.value) {
       setRegisterInputsStates({
         ...registerInputsStates,
         inputName: {
           ...registerInputsStates.inputName,
           errorState: true,
-          errorMessage: data.message,
+          errorMessage: "This field can't be empty",
         },
       })
       setLoading(false)
-      console.log(data)
-
       return
-    } else if (data.ok === false && data.status === 409) {
+    }
+
+    if (!registerInputsStates.inputEmail.value) {
       setRegisterInputsStates({
         ...registerInputsStates,
         inputEmail: {
           ...registerInputsStates.inputEmail,
           errorState: true,
-          errorMessage: data.message,
+          errorMessage: "This field can't be empty",
         },
       })
       setLoading(false)
-      console.log(data)
-
       return
     }
 
-    saveUser(data.user)
+    if (!registerInputsStates.inputPassword.value) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputPassword: {
+          ...registerInputsStates.inputPassword,
+          errorState: true,
+          errorMessage: "This field can't be empty",
+        },
+      })
+      setLoading(false)
+      return
+    }
+
+    if (!registerInputsStates.inputRepeatPassword.value) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputRepeatPassword: {
+          ...registerInputsStates.inputRepeatPassword,
+          errorState: true,
+          errorMessage: "This field can't be empty",
+        },
+      })
+      setLoading(false)
+      return
+    }
+
+    if (
+      registerInputsStates.inputRepeatPassword.value !==
+      registerInputsStates.inputPassword.value
+    ) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputPassword: {
+          ...registerInputsStates.inputPassword,
+          errorState: true,
+          errorMessage: 'Passwords do not match',
+        },
+        inputRepeatPassword: {
+          ...registerInputsStates.inputRepeatPassword,
+          errorState: true,
+          errorMessage: 'Passwords do not match',
+        },
+      })
+      setLoading(false)
+      return
+    } else {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputPassword: {
+          ...registerInputsStates.inputPassword,
+          errorState: false,
+          errorMessage: '',
+        },
+        inputRepeatPassword: {
+          ...registerInputsStates.inputRepeatPassword,
+          errorState: false,
+          errorMessage: '',
+        },
+      })
+    }
+
+    console.log('register')
+
+    // await registerUser()
 
     setLoading(false)
   } catch (error) {
