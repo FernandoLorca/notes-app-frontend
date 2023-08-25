@@ -1,21 +1,110 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { createContext, useContext, useState } from 'react'
 
 import { InputHandlersContext } from '../HomePageContexts/InputsHandlersContext'
 
 export const RegisterLoginContext = createContext()
 
 export default function RegisterLoginContextProvider({ children }) {
-  const { registerInputsStates } = useContext(InputHandlersContext)
+  const { registerInputsStates, setRegisterInputsStates } =
+    useContext(InputHandlersContext)
   const [user, setUser] = useState([])
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    if (user.ok === true && user.user.token)
-      localStorage.setItem('token', user.user.token)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.ok])
+  async function registerFormHandler(e) {
+    e.preventDefault()
 
-  async function registerUser() {
+    if (!registerInputsStates.inputName.value) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputName: {
+          ...registerInputsStates.inputName,
+          errorState: true,
+          errorMessage: "This field can't be empty",
+        },
+      })
+      setLoading(false)
+      return
+    }
+
+    if (!registerInputsStates.inputEmail.value) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputEmail: {
+          ...registerInputsStates.inputEmail,
+          errorState: true,
+          errorMessage: "This field can't be empty",
+        },
+      })
+      setLoading(false)
+      return
+    }
+
+    if (!registerInputsStates.inputPassword.value) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputPassword: {
+          ...registerInputsStates.inputPassword,
+          errorState: true,
+          errorMessage: "This field can't be empty",
+        },
+      })
+      setLoading(false)
+      return
+    }
+
+    if (!registerInputsStates.inputRepeatPassword.value) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputRepeatPassword: {
+          ...registerInputsStates.inputRepeatPassword,
+          errorState: true,
+          errorMessage: "This field can't be empty",
+        },
+      })
+      setLoading(false)
+      return
+    }
+
+    if (
+      registerInputsStates.inputRepeatPassword.value !==
+      registerInputsStates.inputPassword.value
+    ) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputPassword: {
+          ...registerInputsStates.inputPassword,
+          errorState: true,
+          errorMessage: 'Passwords do not match',
+        },
+        inputRepeatPassword: {
+          ...registerInputsStates.inputRepeatPassword,
+          errorState: true,
+          errorMessage: 'Passwords do not match',
+        },
+      })
+      setLoading(false)
+      return
+    } else {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputPassword: {
+          ...registerInputsStates.inputPassword,
+          errorState: false,
+          errorMessage: '',
+        },
+        inputRepeatPassword: {
+          ...registerInputsStates.inputRepeatPassword,
+          errorState: false,
+          errorMessage: '',
+        },
+      })
+    }
+
     try {
+      setLoading(true)
+
       const res = await fetch('http://localhost:3000/api/v1/users/register', {
         method: 'POST',
         headers: {
@@ -29,14 +118,60 @@ export default function RegisterLoginContextProvider({ children }) {
       })
       const data = await res.json()
       setUser(data)
-      return data
+
+      if (data.status === 409) {
+        setRegisterInputsStates({
+          ...registerInputsStates,
+          inputEmail: {
+            ...registerInputsStates.inputEmail,
+            errorState: true,
+            errorMessage: 'Email already exists',
+          },
+        })
+        setLoading(false)
+        return
+      }
+
+      localStorage.setItem('token', data.user.token)
+      setLoading(false)
+      navigate('/notes')
     } catch (error) {
       console.error(error)
     }
   }
 
-  async function loginUser() {
+  async function loginFormHandler(e) {
+    e.preventDefault()
+
+    if (!registerInputsStates.inputEmail.value) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputEmail: {
+          ...registerInputsStates.inputEmail,
+          errorState: true,
+          errorMessage: "This field can't be empty",
+        },
+      })
+      setLoading(false)
+      return
+    }
+
+    if (!registerInputsStates.inputPassword.value) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputPassword: {
+          ...registerInputsStates.inputPassword,
+          errorState: true,
+          errorMessage: "This field can't be empty",
+        },
+      })
+      setLoading(false)
+      return
+    }
+
     try {
+      setLoading(true)
+
       const res = await fetch('http://localhost:3000/api/v1/users/login', {
         method: 'POST',
         headers: {
@@ -49,14 +184,45 @@ export default function RegisterLoginContextProvider({ children }) {
       })
       const data = await res.json()
       setUser(data)
-      return data
+
+      if (data.status === 404) {
+        setRegisterInputsStates({
+          ...registerInputsStates,
+          inputEmail: {
+            ...registerInputsStates.inputEmail,
+            errorState: true,
+            errorMessage: 'User Not found',
+          },
+        })
+        setLoading(false)
+        return
+      }
+
+      if (data.status === 401) {
+        setRegisterInputsStates({
+          ...registerInputsStates,
+          inputPassword: {
+            ...registerInputsStates.inputPassword,
+            errorState: true,
+            errorMessage: 'Invalid password',
+          },
+        })
+        setLoading(false)
+        return
+      }
+
+      localStorage.setItem('token', data.user.token)
+      setLoading(false)
+      navigate('/notes')
     } catch (error) {
       console.error(error)
     }
   }
 
   return (
-    <RegisterLoginContext.Provider value={{ registerUser, loginUser, user }}>
+    <RegisterLoginContext.Provider
+      value={{ registerFormHandler, loginFormHandler, user, loading }}
+    >
       {children}
     </RegisterLoginContext.Provider>
   )

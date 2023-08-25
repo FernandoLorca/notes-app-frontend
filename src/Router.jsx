@@ -23,6 +23,10 @@ export default function Router() {
           </InputHandlersProvider>
         }
       />
+      <Route
+        path="/notes"
+        element={<h1>Notes</h1>}
+      />
     </Routes>
   )
 }
