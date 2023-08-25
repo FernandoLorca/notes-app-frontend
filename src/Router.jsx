@@ -6,8 +6,8 @@ import RegisterLoginContextProvider from './contexts/ApiConnectionsContext/Regis
 
 import NotFoundPage from './pages/NotFoundPage'
 
-import NotesPageValidationToken from './components/NotesPage/NotesPageValidationToken'
 import HomePageValidationToken from './components/HomePage/HomePageValidationToken'
+import NotesPageValidationToken from './components/NotesPage/NotesPageValidationToken'
 
 export default function Router() {
   return (
