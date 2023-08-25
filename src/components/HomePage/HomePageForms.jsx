@@ -1,9 +1,8 @@
 import { Card } from '@nextui-org/card'
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 
 import { HaveAccountContext } from '../../contexts/HomePageContexts/HaveAccountContext'
-import { InputHandlersContext } from '../../contexts/HomePageContexts/InputsHandlersContext'
-import { formHandler } from './utils/formHandler'
+import { RegisterLoginContext } from '../../contexts/ApiConnectionsContext/RegisterLoginContext'
 
 import Form from '../BasicComponents/Forms/Form'
 import HaveAccount from './HaveAccount'
@@ -12,13 +11,8 @@ import LoginInputs from './LoginInputs'
 
 export default function HomePageForms() {
   const { login, loginState } = useContext(HaveAccountContext)
-  const {
-    registerInputsStates,
-    setRegisterInputsStates,
-    registerUser,
-    saveUser,
-  } = useContext(InputHandlersContext)
-  const [loading, setLoading] = useState(false)
+  const { registerFormHandler, loginFormHandler, loading } =
+    useContext(RegisterLoginContext)
 
   return (
     <>
@@ -27,16 +21,7 @@ export default function HomePageForms() {
       >
         <h2 className="mb-4 ml-3 text-lg font-bold">Register new account</h2>
         <Form
-          onSubmit={event =>
-            formHandler(
-              event,
-              registerInputsStates,
-              setRegisterInputsStates,
-              registerUser,
-              saveUser,
-              setLoading
-            )
-          }
+          onSubmit={e => registerFormHandler(e)}
           textButton="Register"
           inputs={<RegisterInputs />}
           loading={loading}
@@ -51,9 +36,10 @@ export default function HomePageForms() {
       >
         <h2 className="mb-4 ml-3 text-lg font-bold">Login to your account</h2>
         <Form
-          onSubmit={event => formHandler(event)}
+          onSubmit={e => loginFormHandler(e)}
           textButton="Login"
           inputs={<LoginInputs />}
+          loading={loading}
         />
         <HaveAccount
           login={login}

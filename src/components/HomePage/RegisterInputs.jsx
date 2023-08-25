@@ -65,6 +65,7 @@ export default function HaveFormInputs() {
       <Input
         type={isVisible.inputRepeatPassword ? 'text' : 'password'}
         label="Repeat password"
+        value={registerInputsStates.inputRepeatPassword.value}
         onChange={e => inputPasswordHandler(e, 'inputRepeatPassword')}
         validationState={
           registerInputsStates.inputRepeatPassword.errorState ? 'invalid' : ''

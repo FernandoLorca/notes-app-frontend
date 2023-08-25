@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import HaveAccountProvider from './contexts/HomePageContexts/HaveAccountContext'
 import InputHandlersProvider from './contexts/HomePageContexts/InputsHandlersContext'
+import RegisterLoginContextProvider from './contexts/ApiConnectionsContext/RegisterLoginContext'
 
 export default function Router() {
   return (
@@ -13,12 +14,18 @@ export default function Router() {
       <Route
         path="/"
         element={
-          <HaveAccountProvider>
-            <InputHandlersProvider>
-              <HomePage />
-            </InputHandlersProvider>
-          </HaveAccountProvider>
+          <InputHandlersProvider>
+            <RegisterLoginContextProvider>
+              <HaveAccountProvider>
+                <HomePage />
+              </HaveAccountProvider>
+            </RegisterLoginContextProvider>
+          </InputHandlersProvider>
         }
+      />
+      <Route
+        path="/notes"
+        element={<h1>Notes</h1>}
       />
     </Routes>
   )
