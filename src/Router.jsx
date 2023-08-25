@@ -5,9 +5,9 @@ import InputHandlersProvider from './contexts/HomePageContexts/InputsHandlersCon
 import RegisterLoginContextProvider from './contexts/ApiConnectionsContext/RegisterLoginContext'
 
 import NotFoundPage from './pages/NotFoundPage'
-import HomePage from './pages/HomePage'
 
 import NotesPageValidationToken from './components/NotesPage/NotesPageValidationToken'
+import HomePageValidationToken from './components/HomePage/HomePageValidationToken'
 
 export default function Router() {
   return (
@@ -22,7 +22,7 @@ export default function Router() {
           <InputHandlersProvider>
             <RegisterLoginContextProvider>
               <HaveAccountProvider>
-                <HomePage />
+                <HomePageValidationToken />
               </HaveAccountProvider>
             </RegisterLoginContextProvider>
           </InputHandlersProvider>
