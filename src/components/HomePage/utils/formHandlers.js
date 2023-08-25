@@ -1,9 +1,8 @@
-export async function formHandler(
+async function registerFormHandler(
   event,
   registerInputsStates,
   setRegisterInputsStates,
   registerUser,
-  userData,
   setLoading
 ) {
   event.preventDefault()
@@ -117,4 +116,81 @@ export async function formHandler(
   } catch (error) {
     console.error(error)
   }
+}
+
+async function loginFormHandler(
+  event,
+  registerInputsStates,
+  setRegisterInputsStates,
+  loginUser,
+  setLoading
+) {
+  event.preventDefault()
+
+  if (!registerInputsStates.inputEmail.value) {
+    setRegisterInputsStates({
+      ...registerInputsStates,
+      inputEmail: {
+        ...registerInputsStates.inputEmail,
+        errorState: true,
+        errorMessage: "This field can't be empty",
+      },
+    })
+    setLoading(false)
+    return
+  }
+
+  if (!registerInputsStates.inputPassword.value) {
+    setRegisterInputsStates({
+      ...registerInputsStates,
+      inputPassword: {
+        ...registerInputsStates.inputPassword,
+        errorState: true,
+        errorMessage: "This field can't be empty",
+      },
+    })
+    setLoading(false)
+    return
+  }
+
+  try {
+    setLoading(true)
+
+    const data = await loginUser()
+    console.log(data)
+    if (data.status === 404) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputEmail: {
+          ...registerInputsStates.inputEmail,
+          errorState: true,
+          errorMessage: 'User Not found',
+        },
+      })
+      setLoading(false)
+      return
+    }
+
+    if (data.status === 401) {
+      setRegisterInputsStates({
+        ...registerInputsStates,
+        inputPassword: {
+          ...registerInputsStates.inputPassword,
+          errorState: true,
+          errorMessage: 'Invalid password',
+        },
+      })
+      setLoading(false)
+      return
+    }
+
+    setLoading(false)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const formHandlers = {
+  registerFormHandler,
+  loginFormHandler,
 }

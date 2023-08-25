@@ -4,7 +4,7 @@ import { useContext, useState } from 'react'
 import { HaveAccountContext } from '../../contexts/HomePageContexts/HaveAccountContext'
 import { InputHandlersContext } from '../../contexts/HomePageContexts/InputsHandlersContext'
 import { RegisterLoginContext } from '../../contexts/ApiConnectionsContext/RegisterLoginContext'
-import { formHandler } from './utils/formHandler'
+import { formHandlers } from './utils/formHandlers'
 
 import Form from '../BasicComponents/Forms/Form'
 import HaveAccount from './HaveAccount'
@@ -15,10 +15,8 @@ export default function HomePageForms() {
   const { login, loginState } = useContext(HaveAccountContext)
   const { registerInputsStates, setRegisterInputsStates } =
     useContext(InputHandlersContext)
-  const { registerUser, userData } = useContext(RegisterLoginContext)
+  const { registerUser, loginUser } = useContext(RegisterLoginContext)
   const [loading, setLoading] = useState(false)
-
-  console.log(userData)
 
   return (
     <>
@@ -28,19 +26,17 @@ export default function HomePageForms() {
         <h2 className="mb-4 ml-3 text-lg font-bold">Register new account</h2>
         <Form
           onSubmit={event =>
-            formHandler(
+            formHandlers.registerFormHandler(
               event,
               registerInputsStates,
               setRegisterInputsStates,
               registerUser,
-              userData,
               setLoading
             )
           }
           textButton="Register"
           inputs={<RegisterInputs />}
           loading={loading}
-          registerUser={registerUser}
         />
         <HaveAccount
           login={login}
@@ -52,9 +48,18 @@ export default function HomePageForms() {
       >
         <h2 className="mb-4 ml-3 text-lg font-bold">Login to your account</h2>
         <Form
-          onSubmit={event => formHandler(event)}
+          onSubmit={event =>
+            formHandlers.loginFormHandler(
+              event,
+              registerInputsStates,
+              setRegisterInputsStates,
+              loginUser,
+              setLoading
+            )
+          }
           textButton="Login"
           inputs={<LoginInputs />}
+          loading={loading}
         />
         <HaveAccount
           login={login}
