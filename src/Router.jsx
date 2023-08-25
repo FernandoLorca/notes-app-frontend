@@ -1,15 +1,20 @@
 import { Routes, Route } from 'react-router-dom'
-import HomePage from './pages/HomePage'
+
 import HaveAccountProvider from './contexts/HomePageContexts/HaveAccountContext'
 import InputHandlersProvider from './contexts/HomePageContexts/InputsHandlersContext'
 import RegisterLoginContextProvider from './contexts/ApiConnectionsContext/RegisterLoginContext'
+
+import NotFoundPage from './pages/NotFoundPage'
+import HomePage from './pages/HomePage'
+
+import NotesPageValidationToken from './components/NotesPage/NotesPageValidationToken'
 
 export default function Router() {
   return (
     <Routes>
       <Route
         path="/*"
-        element={<h1>404</h1>}
+        element={<NotFoundPage />}
       />
       <Route
         path="/"
@@ -25,7 +30,13 @@ export default function Router() {
       />
       <Route
         path="/notes"
-        element={<h1>Notes</h1>}
+        element={
+          <InputHandlersProvider>
+            <RegisterLoginContextProvider>
+              <NotesPageValidationToken />
+            </RegisterLoginContextProvider>
+          </InputHandlersProvider>
+        }
       />
     </Routes>
   )

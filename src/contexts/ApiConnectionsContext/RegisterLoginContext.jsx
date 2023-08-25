@@ -6,11 +6,12 @@ import { InputHandlersContext } from '../HomePageContexts/InputsHandlersContext'
 export const RegisterLoginContext = createContext()
 
 export default function RegisterLoginContextProvider({ children }) {
+  const navigate = useNavigate()
   const { registerInputsStates, setRegisterInputsStates } =
     useContext(InputHandlersContext)
   const [user, setUser] = useState([])
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [token, setToken] = useState(false)
 
   async function registerFormHandler(e) {
     e.preventDefault()
@@ -132,6 +133,7 @@ export default function RegisterLoginContextProvider({ children }) {
         return
       }
 
+      setToken(data.user.token)
       localStorage.setItem('token', data.user.token)
       setLoading(false)
       navigate('/notes')
@@ -211,6 +213,7 @@ export default function RegisterLoginContextProvider({ children }) {
         return
       }
 
+      setToken(data.user.token)
       localStorage.setItem('token', data.user.token)
       setLoading(false)
       navigate('/notes')
@@ -221,7 +224,7 @@ export default function RegisterLoginContextProvider({ children }) {
 
   return (
     <RegisterLoginContext.Provider
-      value={{ registerFormHandler, loginFormHandler, user, loading }}
+      value={{ registerFormHandler, loginFormHandler, loading, user, token }}
     >
       {children}
     </RegisterLoginContext.Provider>
