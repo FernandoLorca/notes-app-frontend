@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 
 import { InputHandlersContext } from '../HomePageContexts/InputsHandlersContext'
 
@@ -6,6 +6,13 @@ export const RegisterLoginContext = createContext()
 
 export default function RegisterLoginContextProvider({ children }) {
   const { registerInputsStates } = useContext(InputHandlersContext)
+  const [user, setUser] = useState([])
+
+  useEffect(() => {
+    if (user.ok === true && user.user.token)
+      localStorage.setItem('token', user.user.token)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.ok])
 
   async function registerUser() {
     try {
@@ -21,7 +28,7 @@ export default function RegisterLoginContextProvider({ children }) {
         }),
       })
       const data = await res.json()
-
+      setUser(data)
       return data
     } catch (error) {
       console.error(error)
@@ -41,7 +48,7 @@ export default function RegisterLoginContextProvider({ children }) {
         }),
       })
       const data = await res.json()
-
+      setUser(data)
       return data
     } catch (error) {
       console.error(error)
@@ -49,7 +56,7 @@ export default function RegisterLoginContextProvider({ children }) {
   }
 
   return (
-    <RegisterLoginContext.Provider value={{ registerUser, loginUser }}>
+    <RegisterLoginContext.Provider value={{ registerUser, loginUser, user }}>
       {children}
     </RegisterLoginContext.Provider>
   )

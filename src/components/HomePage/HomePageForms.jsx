@@ -15,8 +15,11 @@ export default function HomePageForms() {
   const { login, loginState } = useContext(HaveAccountContext)
   const { registerInputsStates, setRegisterInputsStates } =
     useContext(InputHandlersContext)
-  const { registerUser, loginUser } = useContext(RegisterLoginContext)
+  const { registerUser, loginUser, user } = useContext(RegisterLoginContext)
   const [loading, setLoading] = useState(false)
+
+  console.log(user)
+  console.log(localStorage.getItem('token'))
 
   return (
     <>
