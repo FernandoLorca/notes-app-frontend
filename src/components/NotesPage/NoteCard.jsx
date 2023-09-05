@@ -32,6 +32,7 @@ export default function NoteCard() {
             color="danger"
             size="sm"
             radius="full"
+            onClick={() => console.log('delete')}
           >
             <HiTrash className="text-sm" />
           </Button>

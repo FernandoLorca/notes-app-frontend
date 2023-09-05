@@ -28,11 +28,14 @@ export default function HomePageValidationToken() {
         console.error(error);
       }
     };
-
     authValidation();
   }, [token]);
 
   if (!token) {
+    return <HomePage />;
+  }
+
+  if (typeof data === 'object' && data.ok === false) {
     return <HomePage />;
   }
 
