@@ -36,7 +36,11 @@ export default function HomePageValidationToken() {
     return <HomePage />;
   }
 
-  if (data !== [] && data.ok === true && data.message === 'Token is valid') {
+  if (
+    typeof data === 'object' &&
+    data.ok === true &&
+    data.message === 'Token is valid'
+  ) {
     return <Navigate to="/notes" />;
   }
 }

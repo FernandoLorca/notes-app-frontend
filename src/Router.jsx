@@ -15,11 +15,7 @@ export default function Router() {
     <Routes>
       <Route
         path="/*"
-        element={
-          <RegisterLoginContextProvider>
-            <NotFoundPage />
-          </RegisterLoginContextProvider>
-        }
+        element={<NotFoundPage />}
       />
       <Route
         path="/"

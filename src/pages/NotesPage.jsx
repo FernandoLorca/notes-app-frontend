@@ -1,14 +1,18 @@
-import { useContext } from 'react'
-import { NotesApiConnectContext } from '../contexts/ApiConnectionsContext/NotesApiConnectContext'
-
-import NoteCard from '../components/NotesPage/NoteCard'
+import NoteCard from '../components/NotesPage/NoteCard';
 
 export default function NotesPage() {
-  const context = useContext(NotesApiConnectContext)
-
   return (
-    <div>
+    <div className="m-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <NoteCard />
+      <NoteCard />
+      <NoteCard />
+      <NoteCard />
+      <NoteCard />
+      <NoteCard />
+      <NoteCard />
+      <NoteCard />
+      <NoteCard />
       <NoteCard />
     </div>
-  )
+  );
 }
