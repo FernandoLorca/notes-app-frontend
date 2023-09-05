@@ -1,7 +1,9 @@
+import { useContext } from 'react'
+import { RegisterLoginContext } from '../contexts/ApiConnectionsContext/RegisterLoginContext'
 import GoToLogin from '../components/NotFoundPages/GoToLogin'
 
 export default function NotFoundPage() {
-  const token = localStorage.getItem('token')
+  const { user } = useContext(RegisterLoginContext)
 
   return (
     <section className="flex flex-col items-center mt-20">
@@ -11,9 +13,9 @@ export default function NotFoundPage() {
       </div>
       <div className="mt-8">
         <GoToLogin
-          text={token ? 'Go to your notes' : "Maybe you wan't to"}
-          linkText={token ? 'notes' : 'register'}
-          link={token ? '/notes' : '/'}
+          text={user.length > 0 ? 'Go to your notes' : "Maybe you wan't to"}
+          linkText={user.length > 0 ? 'notes' : 'register'}
+          link={user.length > 0 ? '/notes' : '/'}
         />
       </div>
     </section>
