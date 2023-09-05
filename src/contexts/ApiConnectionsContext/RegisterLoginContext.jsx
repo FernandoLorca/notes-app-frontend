@@ -9,7 +9,9 @@ export default function RegisterLoginContextProvider({ children }) {
   const navigate = useNavigate()
   const { registerInputsStates, setRegisterInputsStates } =
     useContext(InputHandlersContext)
-  const [user, setUser] = useState([])
+  const [user, setUser] = useState({
+    ok: false,
+  })
   const [loading, setLoading] = useState(false)
   const [token, setToken] = useState(false)
 
