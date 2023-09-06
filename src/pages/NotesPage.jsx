@@ -2,7 +2,9 @@ import { Chip } from '@nextui-org/react';
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { DeleteNoteNoticeContext } from '../contexts/NotePageContext/DeleteNoteNoticeProvider';
+import BasicButton from '../components/BasicComponents/Buttons/BasicButton';
 import NoteCard from '../components/NotesPage/NoteCard';
+import CreateNote from '../components/NotesPage/CreateNote';
 
 export default function NotesPage() {
   const { deletedNote, setDeletedNote } = useContext(DeleteNoteNoticeContext);
@@ -13,8 +15,6 @@ export default function NotesPage() {
     ok: false,
     message: 'You have no notes yet',
   });
-
-  console.log(deletedNote);
 
   async function getUser() {
     try {
@@ -95,20 +95,26 @@ export default function NotesPage() {
           </Chip>
         </div>
       ) : (
-        <div className="m-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {notes.notes.map(note => (
-            <div key={note.id}>
-              <NoteCard
-                title={note.title}
-                content={note.content}
-                date={note.createdAt}
-                token={token}
-                userName={userName}
-                noteId={note.id}
-              />
-            </div>
-          ))}
-        </div>
+        <>
+          <CreateNote />
+          <div className="flex justify-center mt-5">
+            <BasicButton text="Create note" />
+          </div>
+          <div className="m-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {notes.notes.map(note => (
+              <div key={note.id}>
+                <NoteCard
+                  title={note.title}
+                  content={note.content}
+                  date={note.createdAt}
+                  token={token}
+                  userName={userName}
+                  noteId={note.id}
+                />
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </section>
   );

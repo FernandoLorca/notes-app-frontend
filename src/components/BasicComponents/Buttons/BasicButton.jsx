@@ -1,4 +1,4 @@
-import { Button } from '@nextui-org/button'
+import { Button } from '@nextui-org/button';
 
 export default function NotesButton({ text, typeButton, color = 'primary' }) {
   return (
@@ -9,5 +9,5 @@ export default function NotesButton({ text, typeButton, color = 'primary' }) {
     >
       {text}
     </Button>
-  )
+  );
 }
