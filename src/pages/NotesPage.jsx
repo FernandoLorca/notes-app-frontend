@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { DeleteNoteNoticeContext } from '../contexts/NotePageContext/DeleteNoteNoticeProvider';
 import BasicButton from '../components/BasicComponents/Buttons/BasicButton';
 import NoteCard from '../components/NotesPage/NoteCard';
-import CreateNote from '../components/NotesPage/CreateNote';
+import CreateNote from '../components/NotesPage/CreateNoteComponent';
 
 export default function NotesPage() {
   const { deletedNote, setDeletedNote } = useContext(DeleteNoteNoticeContext);
