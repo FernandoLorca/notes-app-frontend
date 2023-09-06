@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-import { Chip } from '@nextui-org/react'
+import { Chip } from '@nextui-org/react';
 
 export default function GoToLogin({ text, linkText, link }) {
   return (
@@ -15,5 +15,5 @@ export default function GoToLogin({ text, linkText, link }) {
         </Link>
       </Chip>
     </div>
-  )
+  );
 }

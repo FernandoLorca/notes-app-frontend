@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 import NoteCard from '../components/NotesPage/NoteCard';
 
 export default function NotesPage() {
-  const [user, setUser] = useState({});
+  const token = localStorage.getItem('token');
+  const [user, setUser] = useState([]);
+  const [notes, setNotes] = useState([]);
   const [notesVerify, setNotesVerify] = useState({
     ok: false,
     message: 'You have no notes yet',
   });
-  const token = localStorage.getItem('token');
 
   async function getUser() {
     try {
@@ -38,8 +39,8 @@ export default function NotesPage() {
 
   async function getNotes() {
     try {
-      await fetch(
-        `http://localhost:3000/api/v1/users/${userName}/notes/${userId}`,
+      const res = await fetch(
+        `http://localhost:3000/api/v1/users/${userName}/notes`,
         {
           method: 'GET',
           headers: {
@@ -48,15 +49,28 @@ export default function NotesPage() {
           },
         }
       );
+      const notes = await res.json();
+
+      if (notes.ok === false) {
+        setNotesVerify({
+          ok: false,
+          message: 'You have no notes yet',
+        });
+      } else {
+        setNotesVerify({
+          ok: true,
+        });
+        setNotes(notes);
+      }
     } catch (error) {
       console.error(error);
     }
   }
 
   useEffect(() => {
-    if (user.user !== undefined) getNotes();
+    if (typeof user !== Array && user.ok === true) getNotes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [notesVerify]);
+  }, [user]);
 
   return (
     <section>
@@ -75,9 +89,19 @@ export default function NotesPage() {
           </Chip>
         </div>
       ) : (
-        ''
+        <div className="m-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {notes.notes.map(note => (
+            <div key={note.id}>
+              <NoteCard
+                userId={userId}
+                title={note.title}
+                content={note.content}
+                date={note.createdAt}
+              />
+            </div>
+          ))}
+        </div>
       )}
-      <div className="m-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3"></div>
     </section>
   );
 }
