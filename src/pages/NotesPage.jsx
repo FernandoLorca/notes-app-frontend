@@ -93,10 +93,12 @@ export default function NotesPage() {
           {notes.notes.map(note => (
             <div key={note.id}>
               <NoteCard
-                userId={userId}
                 title={note.title}
                 content={note.content}
                 date={note.createdAt}
+                token={token}
+                userName={userName}
+                noteId={note.id}
               />
             </div>
           ))}
