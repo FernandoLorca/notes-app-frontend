@@ -1,9 +1,11 @@
 import { Chip } from '@nextui-org/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { DeleteNoteNoticeContext } from '../contexts/NotePageContext/DeleteNoteNoticeProvider';
 import NoteCard from '../components/NotesPage/NoteCard';
 
 export default function NotesPage() {
+  const { deletedNote, setDeletedNote } = useContext(DeleteNoteNoticeContext);
   const token = localStorage.getItem('token');
   const [user, setUser] = useState([]);
   const [notes, setNotes] = useState([]);
@@ -11,6 +13,8 @@ export default function NotesPage() {
     ok: false,
     message: 'You have no notes yet',
   });
+
+  console.log(deletedNote);
 
   async function getUser() {
     try {
@@ -34,7 +38,6 @@ export default function NotesPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
-  const userId = user.user?.id;
   const userName = user.user?.name.split(' ').join('').toLowerCase();
 
   async function getNotes() {
@@ -68,9 +71,12 @@ export default function NotesPage() {
   }
 
   useEffect(() => {
-    if (typeof user !== Array && user.ok === true) getNotes();
+    if ((typeof user !== Array && user.ok === true) || deletedNote === true) {
+      getNotes();
+      setDeletedNote(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, deletedNote]);
 
   return (
     <section>

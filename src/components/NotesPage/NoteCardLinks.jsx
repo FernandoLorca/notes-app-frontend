@@ -1,10 +1,15 @@
 import { Link, Button } from '@nextui-org/react';
 import { HiTrash, HiPencilAlt } from 'react-icons/hi';
+import { useContext } from 'react';
+
+import { DeleteNoteNoticeContext } from '../../contexts/NotePageContext/DeleteNoteNoticeProvider';
 
 export default function NoteCardLinks({ token, userName, noteId }) {
+  const { setDeletedNote } = useContext(DeleteNoteNoticeContext);
+
   async function deleteNote() {
     try {
-      await fetch(
+      const res = await fetch(
         `http://localhost:3000/api/v1/users/${userName}/notes/${noteId}`,
         {
           method: 'DELETE',
@@ -14,6 +19,11 @@ export default function NoteCardLinks({ token, userName, noteId }) {
           },
         }
       );
+      const data = await res.json();
+
+      if (data.ok === true) {
+        setDeletedNote(true);
+      }
     } catch (error) {
       console.error(error);
     }
