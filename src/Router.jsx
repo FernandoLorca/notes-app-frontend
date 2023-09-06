@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import HaveAccountProvider from './contexts/HomePageContexts/HaveAccountContext';
 import InputHandlersProvider from './contexts/HomePageContexts/InputsHandlersContext';
 import RegisterLoginContextProvider from './contexts/ApiConnectionsContext/RegisterLoginContext';
+import DeleteNoteNoticeProvider from './contexts/NotePageContext/DeleteNoteNoticeProvider';
 
 import NotFoundPage from './pages/NotFoundPage';
 
@@ -35,7 +36,9 @@ export default function Router() {
           <InputHandlersProvider>
             <RegisterLoginContextProvider>
               <NotesApiConnectContextProvider>
-                <NotesPageValidationToken />
+                <DeleteNoteNoticeProvider>
+                  <NotesPageValidationToken />
+                </DeleteNoteNoticeProvider>
               </NotesApiConnectContextProvider>
             </RegisterLoginContextProvider>
           </InputHandlersProvider>

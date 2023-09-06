@@ -3,12 +3,23 @@ import NoteCardTitle from './NoteCardTitle';
 import NoteCardLinks from './NoteCardLinks';
 import NoteCardBody from './NoteCardBody';
 
-export default function NoteCard({ title, content, date, userId }) {
+export default function NoteCard({
+  title,
+  content,
+  date,
+  token,
+  userName,
+  noteId,
+}) {
   return (
     <Card className="w-full flex justify-center">
       <CardHeader className="px-5 flex items-start justify-between">
         <NoteCardTitle title={title} />
-        <NoteCardLinks />
+        <NoteCardLinks
+          userName={userName}
+          token={token}
+          noteId={noteId}
+        />
       </CardHeader>
       <Divider />
       <CardBody>
