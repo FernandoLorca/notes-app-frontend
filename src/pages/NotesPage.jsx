@@ -11,7 +11,9 @@ import CreateNoteComponent from '../components/NotesPage/CreateNoteComponent';
 
 export default function NotesPage() {
   const { deletedNote, setDeletedNote } = useContext(DeleteNoteNoticeContext);
-  const { setNewNoteState } = useContext(NotesApiFetchsContext);
+  const { newNoteState, setNewNoteState, setUserName } = useContext(
+    NotesApiFetchsContext
+  );
 
   const token = localStorage.getItem('token');
   const [user, setUser] = useState([]);
@@ -33,6 +35,7 @@ export default function NotesPage() {
       const data = await res.json();
 
       setUser(data);
+      setUserName(data.user?.name.split(' ').join('').toLowerCase());
     } catch (error) {
       console.error(error);
     }
@@ -81,7 +84,7 @@ export default function NotesPage() {
       setDeletedNote(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, deletedNote]);
+  }, [user, deletedNote, newNoteState]);
 
   return (
     <section>
@@ -105,7 +108,12 @@ export default function NotesPage() {
           <div className="flex justify-center mt-5">
             <BasicButton
               text="Create note"
-              onclick={() => setNewNoteState('block')}
+              onclick={() =>
+                setNewNoteState({
+                  class: 'block',
+                  state: true,
+                })
+              }
             />
           </div>
           <div className="m-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">

@@ -3,22 +3,45 @@ import { createContext, useState } from 'react';
 export const NotesApiFetchsContext = createContext();
 
 export default function NotesApiFetchsProvider({ children }) {
-  const [newNoteState, setNewNoteState] = useState('hidden');
+  const [newNoteState, setNewNoteState] = useState({
+    class: 'hidden',
+    state: false,
+  });
+  const [userName, setUserName] = useState({});
+  const [newNote, setNewNote] = useState({
+    title: '',
+    content: '',
+  });
 
-  async function createNote(newNote) {
-    console.log(newNote);
-    setNewNoteState('hidden');
+  const token = localStorage.getItem('token');
 
-    // try {
+  async function createNote() {
+    try {
+      await fetch(`http://localhost:3000/api/v1/users/${userName}/notes`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newNote),
+      });
 
-    // } catch (error) {
-    //   console.error(error);
-    // }
+      setNewNoteState('hidden');
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
     <NotesApiFetchsContext.Provider
-      value={{ createNote, newNoteState, setNewNoteState }}
+      value={{
+        createNote,
+        setNewNote,
+        newNoteState,
+        setNewNoteState,
+        setUserName,
+        newNote,
+      }}
     >
       {children}
     </NotesApiFetchsContext.Provider>

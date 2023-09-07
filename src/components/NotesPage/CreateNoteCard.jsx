@@ -11,14 +11,11 @@ import {
   Textarea,
 } from '@nextui-org/react';
 import { HiCheck, HiX } from 'react-icons/hi';
-import { useState } from 'react';
 
 export default function CreateNoteCard() {
-  const { createNote } = useContext(NotesApiFetchsContext);
-  const [newNote, setNewNote] = useState({
-    title: '',
-    content: '',
-  });
+  const { createNote, newNote, setNewNote, setNewNoteState } = useContext(
+    NotesApiFetchsContext
+  );
 
   return (
     <div className="flex justify-center">
@@ -48,7 +45,26 @@ export default function CreateNoteCard() {
               }
               size="sm"
               radius="full"
-              onClick={async () => await createNote(newNote)}
+              onClick={async () => {
+                if (
+                  (newNote.title.length === 0 &&
+                    newNote.content.length === 0) ||
+                  (newNote.title.length !== 0 &&
+                    newNote.content.length === 0) ||
+                  (newNote.title.length === 0 && newNote.content.length !== 0)
+                ) {
+                  return setNewNoteState({
+                    class: 'hidden',
+                    state: false,
+                  });
+                } else {
+                  await createNote();
+                  setNewNoteState({
+                    class: 'hidden',
+                    state: false,
+                  });
+                }
+              }}
             >
               <HiX
                 className={`text-sm text-white ${
