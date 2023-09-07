@@ -10,6 +10,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import HomePageValidationToken from './components/HomePage/HomePageValidationToken';
 import NotesPageValidationToken from './components/NotesPage/NotesPageValidationToken';
 import NotesApiConnectContextProvider from './contexts/ApiConnectionsContext/NotesApiConnectContext';
+import NotesApiFetchsProvider from './contexts/NotePageContext/NotesApiFetchsProvider';
 
 export default function Router() {
   return (
@@ -37,7 +38,9 @@ export default function Router() {
             <RegisterLoginContextProvider>
               <NotesApiConnectContextProvider>
                 <DeleteNoteNoticeProvider>
-                  <NotesPageValidationToken />
+                  <NotesApiFetchsProvider>
+                    <NotesPageValidationToken />
+                  </NotesApiFetchsProvider>
                 </DeleteNoteNoticeProvider>
               </NotesApiConnectContextProvider>
             </RegisterLoginContextProvider>
