@@ -1,13 +1,18 @@
 import { Chip } from '@nextui-org/react';
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+
 import { DeleteNoteNoticeContext } from '../contexts/NotePageContext/DeleteNoteNoticeProvider';
+import { NotesApiFetchsContext } from '../contexts/NotePageContext/NotesApiFetchsProvider';
+
 import BasicButton from '../components/BasicComponents/Buttons/BasicButton';
 import NoteCard from '../components/NotesPage/NoteCard';
-import CreateNote from '../components/NotesPage/CreateNoteComponent';
+import CreateNoteComponent from '../components/NotesPage/CreateNoteComponent';
 
 export default function NotesPage() {
   const { deletedNote, setDeletedNote } = useContext(DeleteNoteNoticeContext);
+  const { setNewNoteState } = useContext(NotesApiFetchsContext);
+
   const token = localStorage.getItem('token');
   const [user, setUser] = useState([]);
   const [notes, setNotes] = useState([]);
@@ -96,9 +101,12 @@ export default function NotesPage() {
         </div>
       ) : (
         <>
-          <CreateNote />
+          <CreateNoteComponent />
           <div className="flex justify-center mt-5">
-            <BasicButton text="Create note" />
+            <BasicButton
+              text="Create note"
+              onclick={() => setNewNoteState('block')}
+            />
           </div>
           <div className="m-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {notes.notes.map(note => (
