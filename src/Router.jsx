@@ -3,12 +3,14 @@ import { Routes, Route } from 'react-router-dom';
 import HaveAccountProvider from './contexts/HomePageContexts/HaveAccountContext';
 import InputHandlersProvider from './contexts/HomePageContexts/InputsHandlersContext';
 import RegisterLoginContextProvider from './contexts/ApiConnectionsContext/RegisterLoginContext';
+import DeleteNoteNoticeProvider from './contexts/NotePageContext/DeleteNoteNoticeProvider';
 
 import NotFoundPage from './pages/NotFoundPage';
 
 import HomePageValidationToken from './components/HomePage/HomePageValidationToken';
 import NotesPageValidationToken from './components/NotesPage/NotesPageValidationToken';
 import NotesApiConnectContextProvider from './contexts/ApiConnectionsContext/NotesApiConnectContext';
+import NotesApiFetchsProvider from './contexts/NotePageContext/NotesApiFetchsProvider';
 
 export default function Router() {
   return (
@@ -35,7 +37,11 @@ export default function Router() {
           <InputHandlersProvider>
             <RegisterLoginContextProvider>
               <NotesApiConnectContextProvider>
-                <NotesPageValidationToken />
+                <DeleteNoteNoticeProvider>
+                  <NotesApiFetchsProvider>
+                    <NotesPageValidationToken />
+                  </NotesApiFetchsProvider>
+                </DeleteNoteNoticeProvider>
               </NotesApiConnectContextProvider>
             </RegisterLoginContextProvider>
           </InputHandlersProvider>
