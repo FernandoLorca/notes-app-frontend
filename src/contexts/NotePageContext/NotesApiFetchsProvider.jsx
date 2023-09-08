@@ -26,6 +26,10 @@ export default function NotesApiFetchsProvider({ children }) {
         body: JSON.stringify(newNote),
       });
 
+      setNewNote({
+        title: '',
+        content: '',
+      });
       setNewNoteState('hidden');
     } catch (error) {
       console.error(error);
