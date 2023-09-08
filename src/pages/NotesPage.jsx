@@ -62,6 +62,10 @@ export default function NotesPage() {
       );
       const notes = await res.json();
 
+      if (notes.status === 404) {
+        throw new Error(notes.message);
+      }
+
       if (notes.ok === false) {
         setNotesVerify({
           ok: false,
@@ -88,6 +92,7 @@ export default function NotesPage() {
 
   return (
     <section>
+      <CreateNoteComponent />
       {notesVerify.ok === false ? (
         <div className="flex flex-col items-center gap-5">
           <h1 className="text-5xl mt-10 font-bold text-blue-600">
@@ -96,9 +101,17 @@ export default function NotesPage() {
           <Chip size="lg">
             Create your first one{' '}
             {
-              <Link className="text-blue-600 hover:opacity-75 transition-opacity ease-in">
+              <button
+                className="text-blue-600 hover:opacity-75 transition-opacity ease-in"
+                onClick={() =>
+                  setNewNoteState({
+                    class: 'block',
+                    state: true,
+                  })
+                }
+              >
                 here
-              </Link>
+              </button>
             }
           </Chip>
         </div>
