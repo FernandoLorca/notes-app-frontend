@@ -29,6 +29,13 @@ export default function NoteCardLinks({ token, userName, noteId }) {
     }
   }
 
+  async function editNote() {
+    // try {
+    // } catch (error) {
+    //   console.error(error)
+    // }
+  }
+
   return (
     <div className="flex gap-3">
       <Link>

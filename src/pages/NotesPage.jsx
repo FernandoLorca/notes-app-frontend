@@ -1,6 +1,5 @@
 import { Chip } from '@nextui-org/react';
 import { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 
 import { DeleteNoteNoticeContext } from '../contexts/NotePageContext/DeleteNoteNoticeProvider';
 import { NotesApiFetchsContext } from '../contexts/NotePageContext/NotesApiFetchsProvider';
