@@ -15,8 +15,6 @@ export default function RegisterLoginContextProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState(false);
 
-  console.log(user);
-
   async function registerFormHandler(e) {
     e.preventDefault();
 
@@ -123,6 +121,19 @@ export default function RegisterLoginContextProvider({ children }) {
       });
       const data = await res.json();
       setUser(data);
+
+      if (data.status === 400) {
+        setRegisterInputsStates({
+          ...registerInputsStates,
+          inputName: {
+            ...registerInputsStates.inputName,
+            errorState: true,
+            errorMessage: data.message,
+          },
+        });
+        setLoading(false);
+        return;
+      }
 
       if (data.status === 409) {
         setRegisterInputsStates({
