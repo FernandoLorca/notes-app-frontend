@@ -5,9 +5,17 @@ import { useContext } from 'react';
 import { DeleteNoteNoticeContext } from '../../contexts/NotePageContext/DeleteNoteNoticeProvider';
 import { NotesApiFetchsContext } from '../../contexts/NotePageContext/NotesApiFetchsProvider';
 
-export default function NoteCardLinks({ token, userName, noteId }) {
+export default function NoteCardLinks({
+  token,
+  userName,
+  noteId,
+  title,
+  content,
+}) {
   const { setDeletedNote } = useContext(DeleteNoteNoticeContext);
-  const { setEditNoteState, setNoteId } = useContext(NotesApiFetchsContext);
+  const { setEditNoteState, setNoteId, handleEditNoteValues } = useContext(
+    NotesApiFetchsContext
+  );
 
   async function deleteNote() {
     try {
@@ -45,6 +53,7 @@ export default function NoteCardLinks({ token, userName, noteId }) {
               state: true,
             });
             setNoteId(noteId);
+            handleEditNoteValues(title, content);
           }}
         >
           <HiPencilAlt className="text-sm text-white" />

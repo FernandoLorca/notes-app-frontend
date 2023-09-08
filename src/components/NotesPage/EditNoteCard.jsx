@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext } from 'react';
 
 import { NotesApiFetchsContext } from '../../contexts/NotePageContext/NotesApiFetchsProvider';
 
@@ -12,26 +12,15 @@ import {
 } from '@nextui-org/react';
 import { HiCheck, HiX } from 'react-icons/hi';
 
-export default function CreateNoteCard({ notes }) {
-  const { editNote, newNote, setNewNote, setEditNoteState } = useContext(
-    NotesApiFetchsContext
-  );
-  const [noteToEdit, setNoteToEdit] = useState({});
-
-  useEffect(() => {
-    if (!Array.isArray(notes) && typeof notes === 'object') {
-      notes.notes.find(note =>
-        setNoteToEdit({
-          title: note.title,
-          content: note.content,
-        })
-      );
-    }
-  }, [notes]);
-
-  if (Object.keys(noteToEdit).length > 0) {
-    console.log(noteToEdit);
-  }
+export default function CreateNoteCard() {
+  const {
+    editNote,
+    newNote,
+    setNewNote,
+    setEditNoteState,
+    noteToEdit,
+    setNoteToEdit,
+  } = useContext(NotesApiFetchsContext);
 
   return (
     <div className="flex justify-center">
@@ -71,6 +60,13 @@ export default function CreateNoteCard({ notes }) {
               color="success"
               size="sm"
               radius="full"
+              onClick={async () => {
+                await editNote(noteToEdit.title, noteToEdit.content);
+                setEditNoteState({
+                  class: 'hidden',
+                  state: false,
+                });
+              }}
             >
               <HiCheck className="text-sm text-gray-900" />
             </Button>

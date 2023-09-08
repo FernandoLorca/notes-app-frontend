@@ -17,6 +17,10 @@ export default function NotesApiFetchsProvider({ children }) {
     title: '',
     content: '',
   });
+  const [noteToEdit, setNoteToEdit] = useState({
+    title: '',
+    content: '',
+  });
 
   const token = localStorage.getItem('token');
 
@@ -41,7 +45,14 @@ export default function NotesApiFetchsProvider({ children }) {
     }
   }
 
-  async function editNote() {
+  const handleEditNoteValues = (title, content) => {
+    setNoteToEdit({
+      title,
+      content,
+    });
+  };
+
+  async function editNote(title, content) {
     try {
       await fetch(
         `http://localhost:3000/api/v1/users/${userName}/notes/${noteId}`,
@@ -51,6 +62,10 @@ export default function NotesApiFetchsProvider({ children }) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
+          body: JSON.stringify({
+            title,
+            content,
+          }),
         }
       );
     } catch (error) {
@@ -71,6 +86,9 @@ export default function NotesApiFetchsProvider({ children }) {
         editNoteState,
         setEditNoteState,
         setNoteId,
+        noteToEdit,
+        setNoteToEdit,
+        handleEditNoteValues,
       }}
     >
       {children}
