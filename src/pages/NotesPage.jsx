@@ -7,6 +7,7 @@ import { NotesApiFetchsContext } from '../contexts/NotePageContext/NotesApiFetch
 import BasicButton from '../components/BasicComponents/Buttons/BasicButton';
 import NoteCard from '../components/NotesPage/NoteCard';
 import CreateNoteComponent from '../components/NotesPage/CreateNoteComponent';
+import EditNoteComponent from '../components/NotesPage/EditNoteComponent';
 
 export default function NotesPage() {
   const { deletedNote, setDeletedNote } = useContext(DeleteNoteNoticeContext);
@@ -92,6 +93,7 @@ export default function NotesPage() {
   return (
     <section>
       <CreateNoteComponent />
+      <EditNoteComponent notes={notes} />
       {notesVerify.ok === false ? (
         <div className="flex flex-col items-center gap-5">
           <h1 className="text-5xl mt-10 font-bold text-blue-600">

@@ -3,9 +3,11 @@ import { HiTrash, HiPencilAlt } from 'react-icons/hi';
 import { useContext } from 'react';
 
 import { DeleteNoteNoticeContext } from '../../contexts/NotePageContext/DeleteNoteNoticeProvider';
+import { NotesApiFetchsContext } from '../../contexts/NotePageContext/NotesApiFetchsProvider';
 
 export default function NoteCardLinks({ token, userName, noteId }) {
   const { setDeletedNote } = useContext(DeleteNoteNoticeContext);
+  const { setEditNoteState, setNoteId } = useContext(NotesApiFetchsContext);
 
   async function deleteNote() {
     try {
@@ -29,23 +31,6 @@ export default function NoteCardLinks({ token, userName, noteId }) {
     }
   }
 
-  async function editNote() {
-    try {
-      await fetch(
-        `http://localhost:3000/api/v1/users/${userName}/notes/${noteId}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   return (
     <div className="flex gap-3">
       <Link>
@@ -54,7 +39,13 @@ export default function NoteCardLinks({ token, userName, noteId }) {
           color="warning"
           size="sm"
           radius="full"
-          onClick={async () => console.log('click')}
+          onClick={async () => {
+            setEditNoteState({
+              class: 'block',
+              state: true,
+            });
+            setNoteId(noteId);
+          }}
         >
           <HiPencilAlt className="text-sm text-white" />
         </Button>

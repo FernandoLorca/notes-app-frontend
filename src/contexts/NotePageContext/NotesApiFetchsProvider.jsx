@@ -7,7 +7,12 @@ export default function NotesApiFetchsProvider({ children }) {
     class: 'hidden',
     state: false,
   });
+  const [editNoteState, setEditNoteState] = useState({
+    class: 'hidden',
+    state: false,
+  });
   const [userName, setUserName] = useState({});
+  const [noteId, setNoteId] = useState('');
   const [newNote, setNewNote] = useState({
     title: '',
     content: '',
@@ -36,6 +41,23 @@ export default function NotesApiFetchsProvider({ children }) {
     }
   }
 
+  async function editNote() {
+    try {
+      await fetch(
+        `http://localhost:3000/api/v1/users/${userName}/notes/${noteId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <NotesApiFetchsContext.Provider
       value={{
@@ -45,6 +67,10 @@ export default function NotesApiFetchsProvider({ children }) {
         setNewNoteState,
         setUserName,
         newNote,
+        editNote,
+        editNoteState,
+        setEditNoteState,
+        setNoteId,
       }}
     >
       {children}
