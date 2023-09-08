@@ -30,10 +30,20 @@ export default function NoteCardLinks({ token, userName, noteId }) {
   }
 
   async function editNote() {
-    // try {
-    // } catch (error) {
-    //   console.error(error)
-    // }
+    try {
+      await fetch(
+        `http://localhost:3000/api/v1/users/${userName}/notes/${noteId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -44,6 +54,7 @@ export default function NoteCardLinks({ token, userName, noteId }) {
           color="warning"
           size="sm"
           radius="full"
+          onClick={async () => console.log('click')}
         >
           <HiPencilAlt className="text-sm text-white" />
         </Button>
