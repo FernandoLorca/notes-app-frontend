@@ -29,7 +29,7 @@ export default function InputHandlersProvider({ children }) {
       errorMessage: '',
     },
     inputEmail: {
-      value: 'florcapinto16@gmail.com',
+      value: 'florcapinto@gmail.com',
       errorState: false,
       errorMessage: '',
     },

@@ -1,22 +1,22 @@
-import { useNavigate } from 'react-router-dom'
-import { createContext, useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { createContext, useContext, useState } from 'react';
 
-import { InputHandlersContext } from '../HomePageContexts/InputsHandlersContext'
+import { InputHandlersContext } from '../HomePageContexts/InputsHandlersContext';
 
-export const RegisterLoginContext = createContext()
+export const RegisterLoginContext = createContext();
 
 export default function RegisterLoginContextProvider({ children }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { registerInputsStates, setRegisterInputsStates } =
-    useContext(InputHandlersContext)
+    useContext(InputHandlersContext);
   const [user, setUser] = useState({
     ok: false,
-  })
-  const [loading, setLoading] = useState(false)
-  const [token, setToken] = useState(false)
+  });
+  const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState(false);
 
   async function registerFormHandler(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!registerInputsStates.inputName.value) {
       setRegisterInputsStates({
@@ -26,9 +26,9 @@ export default function RegisterLoginContextProvider({ children }) {
           errorState: true,
           errorMessage: "This field can't be empty",
         },
-      })
-      setLoading(false)
-      return
+      });
+      setLoading(false);
+      return;
     }
 
     if (!registerInputsStates.inputEmail.value) {
@@ -39,9 +39,9 @@ export default function RegisterLoginContextProvider({ children }) {
           errorState: true,
           errorMessage: "This field can't be empty",
         },
-      })
-      setLoading(false)
-      return
+      });
+      setLoading(false);
+      return;
     }
 
     if (!registerInputsStates.inputPassword.value) {
@@ -52,9 +52,9 @@ export default function RegisterLoginContextProvider({ children }) {
           errorState: true,
           errorMessage: "This field can't be empty",
         },
-      })
-      setLoading(false)
-      return
+      });
+      setLoading(false);
+      return;
     }
 
     if (!registerInputsStates.inputRepeatPassword.value) {
@@ -65,9 +65,9 @@ export default function RegisterLoginContextProvider({ children }) {
           errorState: true,
           errorMessage: "This field can't be empty",
         },
-      })
-      setLoading(false)
-      return
+      });
+      setLoading(false);
+      return;
     }
 
     if (
@@ -86,9 +86,9 @@ export default function RegisterLoginContextProvider({ children }) {
           errorState: true,
           errorMessage: 'Passwords do not match',
         },
-      })
-      setLoading(false)
-      return
+      });
+      setLoading(false);
+      return;
     } else {
       setRegisterInputsStates({
         ...registerInputsStates,
@@ -102,11 +102,11 @@ export default function RegisterLoginContextProvider({ children }) {
           errorState: false,
           errorMessage: '',
         },
-      })
+      });
     }
 
     try {
-      setLoading(true)
+      setLoading(true);
 
       const res = await fetch('http://localhost:3000/api/v1/users/register', {
         method: 'POST',
@@ -118,9 +118,22 @@ export default function RegisterLoginContextProvider({ children }) {
           email: registerInputsStates.inputEmail.value,
           password: registerInputsStates.inputPassword.value,
         }),
-      })
-      const data = await res.json()
-      setUser(data)
+      });
+      const data = await res.json();
+      setUser(data);
+
+      if (data.status === 400) {
+        setRegisterInputsStates({
+          ...registerInputsStates,
+          inputName: {
+            ...registerInputsStates.inputName,
+            errorState: true,
+            errorMessage: data.message,
+          },
+        });
+        setLoading(false);
+        return;
+      }
 
       if (data.status === 409) {
         setRegisterInputsStates({
@@ -130,22 +143,22 @@ export default function RegisterLoginContextProvider({ children }) {
             errorState: true,
             errorMessage: 'Email already exists',
           },
-        })
-        setLoading(false)
-        return
+        });
+        setLoading(false);
+        return;
       }
 
-      setToken(data.user.token)
-      localStorage.setItem('token', data.user.token)
-      setLoading(false)
-      navigate('/notes')
+      setToken(data.user.token);
+      localStorage.setItem('token', data.user.token);
+      setLoading(false);
+      navigate('/notes');
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
   async function loginFormHandler(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!registerInputsStates.inputEmail.value) {
       setRegisterInputsStates({
@@ -155,9 +168,9 @@ export default function RegisterLoginContextProvider({ children }) {
           errorState: true,
           errorMessage: "This field can't be empty",
         },
-      })
-      setLoading(false)
-      return
+      });
+      setLoading(false);
+      return;
     }
 
     if (!registerInputsStates.inputPassword.value) {
@@ -168,13 +181,13 @@ export default function RegisterLoginContextProvider({ children }) {
           errorState: true,
           errorMessage: "This field can't be empty",
         },
-      })
-      setLoading(false)
-      return
+      });
+      setLoading(false);
+      return;
     }
 
     try {
-      setLoading(true)
+      setLoading(true);
 
       const res = await fetch('http://localhost:3000/api/v1/users/login', {
         method: 'POST',
@@ -185,9 +198,9 @@ export default function RegisterLoginContextProvider({ children }) {
           email: registerInputsStates.inputEmail.value,
           password: registerInputsStates.inputPassword.value,
         }),
-      })
-      const data = await res.json()
-      setUser(data)
+      });
+      const data = await res.json();
+      setUser(data);
 
       if (data.status === 404) {
         setRegisterInputsStates({
@@ -197,9 +210,9 @@ export default function RegisterLoginContextProvider({ children }) {
             errorState: true,
             errorMessage: 'User Not found',
           },
-        })
-        setLoading(false)
-        return
+        });
+        setLoading(false);
+        return;
       }
 
       if (data.status === 401) {
@@ -210,17 +223,17 @@ export default function RegisterLoginContextProvider({ children }) {
             errorState: true,
             errorMessage: 'Invalid password',
           },
-        })
-        setLoading(false)
-        return
+        });
+        setLoading(false);
+        return;
       }
 
-      setToken(data.user.token)
-      localStorage.setItem('token', data.user.token)
-      setLoading(false)
-      navigate('/notes')
+      setToken(data.user.token);
+      localStorage.setItem('token', data.user.token);
+      setLoading(false);
+      navigate('/notes');
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
@@ -230,5 +243,5 @@ export default function RegisterLoginContextProvider({ children }) {
     >
       {children}
     </RegisterLoginContext.Provider>
-  )
+  );
 }
