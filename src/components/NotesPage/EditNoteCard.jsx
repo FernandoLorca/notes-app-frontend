@@ -20,6 +20,7 @@ export default function CreateNoteCard() {
     setEditNoteState,
     noteToEdit,
     setNoteToEdit,
+    setEditeNoteCheck,
   } = useContext(NotesApiFetchsContext);
 
   return (
@@ -62,6 +63,7 @@ export default function CreateNoteCard() {
               radius="full"
               onClick={async () => {
                 await editNote(noteToEdit.title, noteToEdit.content);
+                setEditeNoteCheck(true);
                 setEditNoteState({
                   class: 'hidden',
                   state: false,

@@ -21,6 +21,7 @@ export default function NotesApiFetchsProvider({ children }) {
     title: '',
     content: '',
   });
+  const [editeNoteCheck, setEditeNoteCheck] = useState(false);
 
   const token = localStorage.getItem('token');
 
@@ -89,6 +90,8 @@ export default function NotesApiFetchsProvider({ children }) {
         noteToEdit,
         setNoteToEdit,
         handleEditNoteValues,
+        editeNoteCheck,
+        setEditeNoteCheck,
       }}
     >
       {children}

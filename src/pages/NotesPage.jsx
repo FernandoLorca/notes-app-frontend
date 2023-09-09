@@ -11,9 +11,13 @@ import EditNoteComponent from '../components/NotesPage/EditNoteComponent';
 
 export default function NotesPage() {
   const { deletedNote, setDeletedNote } = useContext(DeleteNoteNoticeContext);
-  const { newNoteState, setNewNoteState, setUserName } = useContext(
-    NotesApiFetchsContext
-  );
+  const {
+    newNoteState,
+    setNewNoteState,
+    setUserName,
+    editeNoteCheck,
+    setEditeNoteCheck,
+  } = useContext(NotesApiFetchsContext);
 
   const token = localStorage.getItem('token');
   const [user, setUser] = useState([]);
@@ -83,12 +87,17 @@ export default function NotesPage() {
   }
 
   useEffect(() => {
-    if ((typeof user !== Array && user.ok === true) || deletedNote === true) {
+    if (
+      (typeof user !== Array && user.ok === true) ||
+      deletedNote === true ||
+      editeNoteCheck === true
+    ) {
       getNotes();
       setDeletedNote(false);
+      setEditeNoteCheck(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, deletedNote, newNoteState]);
+  }, [user, deletedNote, newNoteState, editeNoteCheck]);
 
   return (
     <section>
