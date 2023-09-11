@@ -19,6 +19,8 @@ export default function NoteCard({
           userName={userName}
           token={token}
           noteId={noteId}
+          title={title}
+          content={content}
         />
       </CardHeader>
       <Divider />

@@ -1,6 +1,5 @@
 import { Chip } from '@nextui-org/react';
 import { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 
 import { DeleteNoteNoticeContext } from '../contexts/NotePageContext/DeleteNoteNoticeProvider';
 import { NotesApiFetchsContext } from '../contexts/NotePageContext/NotesApiFetchsProvider';
@@ -8,12 +7,18 @@ import { NotesApiFetchsContext } from '../contexts/NotePageContext/NotesApiFetch
 import BasicButton from '../components/BasicComponents/Buttons/BasicButton';
 import NoteCard from '../components/NotesPage/NoteCard';
 import CreateNoteComponent from '../components/NotesPage/CreateNoteComponent';
+import EditNoteComponent from '../components/NotesPage/EditNoteComponent';
+import LogOutComponent from '../components/HomePage/LogOutComponent';
 
 export default function NotesPage() {
   const { deletedNote, setDeletedNote } = useContext(DeleteNoteNoticeContext);
-  const { newNoteState, setNewNoteState, setUserName } = useContext(
-    NotesApiFetchsContext
-  );
+  const {
+    newNoteState,
+    setNewNoteState,
+    setUserName,
+    editeNoteCheck,
+    setEditeNoteCheck,
+  } = useContext(NotesApiFetchsContext);
 
   const token = localStorage.getItem('token');
   const [user, setUser] = useState([]);
@@ -62,10 +67,6 @@ export default function NotesPage() {
       );
       const notes = await res.json();
 
-      if (notes.status === 404) {
-        throw new Error(notes.message);
-      }
-
       if (notes.ok === false) {
         setNotesVerify({
           ok: false,
@@ -82,13 +83,21 @@ export default function NotesPage() {
     }
   }
 
+  console.log(token.length);
+
   useEffect(() => {
-    if ((typeof user !== Array && user.ok === true) || deletedNote === true) {
+    if (
+      token.length > 5 ||
+      (typeof user !== Array && user.ok === true && Array.isArray(notes)) ||
+      deletedNote === true ||
+      editeNoteCheck === true
+    ) {
       getNotes();
       setDeletedNote(false);
+      setEditeNoteCheck(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, deletedNote, newNoteState]);
+  }, [user, deletedNote, newNoteState, editeNoteCheck, token]);
 
   return (
     <section>
@@ -118,7 +127,9 @@ export default function NotesPage() {
       ) : (
         <>
           <CreateNoteComponent />
-          <div className="flex justify-center mt-5">
+          <EditNoteComponent notes={notes} />
+          <LogOutComponent />
+          <div className="flex justify-center pt-5">
             <BasicButton
               text="Create note"
               onclick={() =>
