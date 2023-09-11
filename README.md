@@ -30,7 +30,7 @@ If you want to run the app in your local environment, follow these steps:
 
 1. Start the application in development mode with `npm start`
 
-1. Open your browser and go to `http://localhost:5174` to see notes app in action
+1. Open your browser and go to `http://localhost:4173` to see notes app in action
 
 ## Author
 
