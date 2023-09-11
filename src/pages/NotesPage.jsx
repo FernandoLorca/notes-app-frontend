@@ -8,6 +8,7 @@ import BasicButton from '../components/BasicComponents/Buttons/BasicButton';
 import NoteCard from '../components/NotesPage/NoteCard';
 import CreateNoteComponent from '../components/NotesPage/CreateNoteComponent';
 import EditNoteComponent from '../components/NotesPage/EditNoteComponent';
+import LogOutComponent from '../components/HomePage/LogOutComponent';
 
 export default function NotesPage() {
   const { deletedNote, setDeletedNote } = useContext(DeleteNoteNoticeContext);
@@ -66,10 +67,6 @@ export default function NotesPage() {
       );
       const notes = await res.json();
 
-      if (notes.status === 404) {
-        throw new Error(notes.message);
-      }
-
       if (notes.ok === false) {
         setNotesVerify({
           ok: false,
@@ -86,9 +83,12 @@ export default function NotesPage() {
     }
   }
 
+  console.log(token.length);
+
   useEffect(() => {
     if (
-      (typeof user !== Array && user.ok === true) ||
+      token.length > 5 ||
+      (typeof user !== Array && user.ok === true && Array.isArray(notes)) ||
       deletedNote === true ||
       editeNoteCheck === true
     ) {
@@ -97,12 +97,11 @@ export default function NotesPage() {
       setEditeNoteCheck(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, deletedNote, newNoteState, editeNoteCheck]);
+  }, [user, deletedNote, newNoteState, editeNoteCheck, token]);
 
   return (
     <section>
       <CreateNoteComponent />
-      <EditNoteComponent notes={notes} />
       {notesVerify.ok === false ? (
         <div className="flex flex-col items-center gap-5">
           <h1 className="text-5xl mt-10 font-bold text-blue-600">
@@ -128,7 +127,9 @@ export default function NotesPage() {
       ) : (
         <>
           <CreateNoteComponent />
-          <div className="flex justify-center mt-5">
+          <EditNoteComponent notes={notes} />
+          <LogOutComponent />
+          <div className="flex justify-center pt-5">
             <BasicButton
               text="Create note"
               onclick={() =>
