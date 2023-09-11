@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
 import NotesPage from '../../pages/NotesPage';
 import NotFoundPage from '../../pages/NotFoundPage';
@@ -33,7 +34,7 @@ export default function NotesPageValidationToken() {
   }, [token]);
 
   if (!token) {
-    return <NotFoundPage />;
+    return <Navigate to="/" />;
   }
 
   if (

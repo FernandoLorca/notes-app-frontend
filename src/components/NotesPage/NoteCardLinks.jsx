@@ -3,9 +3,19 @@ import { HiTrash, HiPencilAlt } from 'react-icons/hi';
 import { useContext } from 'react';
 
 import { DeleteNoteNoticeContext } from '../../contexts/NotePageContext/DeleteNoteNoticeProvider';
+import { NotesApiFetchsContext } from '../../contexts/NotePageContext/NotesApiFetchsProvider';
 
-export default function NoteCardLinks({ token, userName, noteId }) {
+export default function NoteCardLinks({
+  token,
+  userName,
+  noteId,
+  title,
+  content,
+}) {
   const { setDeletedNote } = useContext(DeleteNoteNoticeContext);
+  const { setEditNoteState, setNoteId, handleEditNoteValues } = useContext(
+    NotesApiFetchsContext
+  );
 
   async function deleteNote() {
     try {
@@ -37,6 +47,14 @@ export default function NoteCardLinks({ token, userName, noteId }) {
           color="warning"
           size="sm"
           radius="full"
+          onClick={async () => {
+            setEditNoteState({
+              class: 'block',
+              state: true,
+            });
+            setNoteId(noteId);
+            handleEditNoteValues(title, content);
+          }}
         >
           <HiPencilAlt className="text-sm text-white" />
         </Button>

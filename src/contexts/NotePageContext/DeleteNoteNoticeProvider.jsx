@@ -6,7 +6,12 @@ export default function DeleteNoteNoticeProvider({ children }) {
   const [deletedNote, setDeletedNote] = useState(false);
 
   return (
-    <DeleteNoteNoticeContext.Provider value={{ deletedNote, setDeletedNote }}>
+    <DeleteNoteNoticeContext.Provider
+      value={{
+        deletedNote,
+        setDeletedNote,
+      }}
+    >
       {children}
     </DeleteNoteNoticeContext.Provider>
   );
