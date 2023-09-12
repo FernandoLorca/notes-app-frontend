@@ -27,17 +27,14 @@ export default function NotesApiFetchsProvider({ children }) {
 
   async function createNote() {
     try {
-      await fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/users/${userName}/notes`,
-        {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(newNote),
-        }
-      );
+      await fetch(`${import.meta.env.VITE_API_URL}/users/${userName}/notes`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newNote),
+      });
 
       setNewNote({
         title: '',
@@ -59,9 +56,7 @@ export default function NotesApiFetchsProvider({ children }) {
   async function editNote(title, content) {
     try {
       await fetch(
-        `${
-          import.meta.env.VITE_API_URL
-        }/api/v1/users/${userName}/notes/${noteId}`,
+        `${import.meta.env.VITE_API_URL}/users/${userName}/notes/${noteId}`,
         {
           method: 'PUT',
           headers: {

@@ -20,9 +20,7 @@ export default function NoteCardLinks({
   async function deleteNote() {
     try {
       const res = await fetch(
-        `${
-          import.meta.env.VITE_API_URL
-        }/api/v1/users/${userName}/notes/${noteId}`,
+        `${import.meta.env.VITE_API_URL}/users/${userName}/notes/${noteId}`,
         {
           method: 'DELETE',
           headers: {
