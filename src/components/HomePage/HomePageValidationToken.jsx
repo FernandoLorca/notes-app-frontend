@@ -14,7 +14,7 @@ export default function HomePageValidationToken() {
 
     const authValidation = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/v1/users/auth', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/users/auth`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

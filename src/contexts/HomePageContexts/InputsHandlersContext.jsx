@@ -29,12 +29,12 @@ export default function InputHandlersProvider({ children }) {
       errorMessage: '',
     },
     inputEmail: {
-      value: 'florcapinto@gmail.com',
+      value: '',
       errorState: false,
       errorMessage: '',
     },
     inputPassword: {
-      value: '12345678',
+      value: '',
       errorState: false,
       errorMessage: '',
     },

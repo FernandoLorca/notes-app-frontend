@@ -108,17 +108,20 @@ export default function RegisterLoginContextProvider({ children }) {
     try {
       setLoading(true);
 
-      const res = await fetch('http://localhost:3000/api/v1/users/register', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: registerInputsStates.inputName.value,
-          email: registerInputsStates.inputEmail.value,
-          password: registerInputsStates.inputPassword.value,
-        }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/users/register`,
+        {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: registerInputsStates.inputName.value,
+            email: registerInputsStates.inputEmail.value,
+            password: registerInputsStates.inputPassword.value,
+          }),
+        }
+      );
       const data = await res.json();
       setUser(data);
 
@@ -189,7 +192,7 @@ export default function RegisterLoginContextProvider({ children }) {
     try {
       setLoading(true);
 
-      const res = await fetch('http://localhost:3000/api/v1/users/login', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/login`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
