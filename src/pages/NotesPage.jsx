@@ -83,8 +83,6 @@ export default function NotesPage() {
     }
   }
 
-  console.log(token.length);
-
   useEffect(() => {
     if (
       token.length > 5 ||

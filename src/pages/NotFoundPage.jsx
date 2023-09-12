@@ -12,13 +12,16 @@ export default function NotFoundPage() {
 
     const authValidation = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/v1/users/auth', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/v1/users/auth`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const resData = await res.json();
 
         setData(resData);
