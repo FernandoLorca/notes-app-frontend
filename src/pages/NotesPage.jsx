@@ -30,7 +30,7 @@ export default function NotesPage() {
 
   async function getUser() {
     try {
-      const res = await fetch('http://localhost:3000/api/v1/users/auth', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/auth`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export default function NotesPage() {
   async function getNotes() {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/v1/users/${userName}/notes`,
+        `${import.meta.env.VITE_API_URL}/users/${userName}/notes`,
         {
           method: 'GET',
           headers: {
